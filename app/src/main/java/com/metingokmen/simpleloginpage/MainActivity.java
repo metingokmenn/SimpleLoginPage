@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = this.getSharedPreferences("com.metingokmen.simpleloginpage", Context.MODE_PRIVATE);
         editText1 = findViewById(R.id.editTextPersonName);
         editText2 = findViewById(R.id.editTextPassword);
+        String savedUsername = sharedPreferences.getString("username","");
+        String savedPassword = sharedPreferences.getString("password","");
+        username = savedUsername;
+        password = savedPassword;
 
     }
 
@@ -45,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void login(View view){
+        Intent intent = new Intent(MainActivity.this,MainActivity2.class);
         String enteredUsername = editText1.getText().toString();
         String enteredPassword = editText2.getText().toString();
         AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
@@ -58,12 +65,28 @@ public class MainActivity extends AppCompatActivity {
         else{
             if(enteredUsername.matches(username) && enteredPassword.matches(password)){
                 Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_LONG).show();
+                startActivity(intent);
             }
             else{
                 Toast.makeText(MainActivity.this,"Username or password is incorrect",Toast.LENGTH_LONG).show();
             }
         }
 
+
+    }
+    public void delete(View view){
+        String storedUsername = sharedPreferences.getString("username","");
+        String storedPassword = sharedPreferences.getString("password","");
+        if(!(storedUsername.isEmpty() && storedPassword.isEmpty())){
+            Toast.makeText(MainActivity.this,"Deleted",Toast.LENGTH_LONG).show();
+            //sharedPreferences.edit().remove("username").apply();
+            //sharedPreferences.edit().remove("password").apply();
+            username = "";
+            password = "";
+        }
+
+        //sharedPreferences.edit().remove("username").apply();
+        //sharedPreferences.edit().remove("password").apply();
 
     }
 }
